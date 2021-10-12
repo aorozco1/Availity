@@ -1,0 +1,20 @@
+SELECT * FROM Customer
+WHERE (lower(Lastname) LIKE '%s')
+ORDER BY LastName DESC 
+--#2
+SELECT CustID, ISNULL(SUM(OrderLine.Quantity, OrderLine.Cost),0) OrderCost
+--left join because we want customers that have no orders still
+FROM Customer LEFT JOIN
+Order on Customer.CustID = Order.CustomerID
+INNER JOIN OrderLine 
+on Order.OrderId = OrderLine.OrdID
+GROUP BY CustID
+--#3
+SELECT CustID, ISNULL(SUM(OrderLine.Quantity, OrderLine.Cost),0) OrderCost
+--left join because we want customers that have no orders still
+FROM Customer LEFT JOIN
+Order on Customer.CustID = Order.CustomerID
+INNER JOIN OrderLine 
+on Order.OrderId = OrderLine.OrdID
+WHERE OrderCost < 500 && OrderCost > 100
+GROUP BY CustID
